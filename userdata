@@ -1,0 +1,20 @@
+"UserData": {
+                    "Fn::Base64": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "#!/bin/bash\n",
+                                "yum update -y\n",
+                                "yum install -y docker\n",
+                                "service docker start\n",
+                                "chkconfig docker on\n",
+                                "mkdir /home/ec2-user/js\n",
+                                "echo \"<html ng-app=\\\"demoApp\\\">\n  <head>\n  <meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=ISO-8859-1\\\">\n  <title>AngularJs Demo</title>\n  <script src=\\\"https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js\\\"></script>\n  <script src=\\\"js/angulardemo.js\\\"></script>\n  </head>\n  <body>\n  <h1>AngularJS Demo v1.3</h1>\n  <div ng-controller=\\\"demoCtrl\\\">\n  <table border=\\\"1\\\">\n  <tr>\n  <td>Book Name</td>\n  <td ng-bind=\"book\"></td>\n  </tr>\n  <tr>\n  <td>Author</td>\n  <td ng-bind=\\\"author\\\"></td>\n  </tr>\n  </table>\n  </div>\n  </body>\n  </html>\" > /home/ec2-user/index.html\n",
+                                "echo \"var app = angular.module(\\\"demoApp\\\", []);\n  app.controller(\\\"demoCtrl\\\", function(\\$scope) {\n  \\$scope.book = \\\"The Alchemist\\\";\n  \\$scope.author = \\\"Paulo Coelho\\\";\n  });\" > /home/ec2-user/js/angulardemo.js\n",
+                                "docker run -dit --name angularjs-app -p 80:80 -v /home/ec2-user:/usr/local/apache2/htdocs/ httpd:2.4\n",
+                                "sleep 30\n",
+                                "docker exec angularjs-app chmod -R 755 htdocs\n"
+                            ]
+                        ]
+                    }
+                },
