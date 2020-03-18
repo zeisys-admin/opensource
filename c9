@@ -32,13 +32,13 @@
             "FromPort": 22,
             "ToPort": 22,
             "IpProtocol": "tcp",
-            "CidrIp": "35.172.155.192/27"
+            "CidrIp": "0.0.0.0/0"
           },
           {
             "FromPort": 22,
             "ToPort": 22,
             "IpProtocol": "tcp",
-            "CidrIp": "35.172.155.96/27"
+            "CidrIp": "0.0.0.0/0"
           }
         ]
         ,"Tags": [
