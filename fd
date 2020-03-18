@@ -1,0 +1,32 @@
+from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from email.mime.text import MIMEText
+from subprocess import Popen, PIPE
+import json
+
+
+# enable browser logging
+d = DesiredCapabilities.CHROME
+d['loggingPrefs'] = { 'performance':'ALL' }
+
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+
+driver = webdriver.Chrome(executable_path='/usr/bin/chromedriver', chrome_options=chrome_options, service_args=['--verbose', '--log-path=/tmp/chromedriver.log'])
+
+driver.get('https://spsservices.dev.va.anthem.com/spsservices/provider/organization/initData')
+har = json.loads(driver.get_log('performance')[-8]['message'])
+harp = har['message']['params']['response']['status']
+#print(harp)
+if harp == 200:
+        msg = MIMEText("API is <font color=\"green\">healthy</font>.<br><br>API URL tested:<br><br>https://spsservices.dev.va.anthem.com/spsservices/provider/organization/initData<br><br>Test run using Selenium 3.141.0.", 'html')
+        msg["Subject"] = "Selenium API Test Success"
+else:
+        msg = MIMEText("API is <font color=\"red\">inaccessible. This may mean that the application itself is unhealthy, or the operating system of this application is unstable. Please rollback any application, OS, dependancy patches that occured recently or any other additional corrective actions needed. </font><br><br>API URL tested:<br>https://spsservices.dev.va.anthem.com/spsservices/provider/organization/initData<br><br>Test run using Selenium 3.141.0.", 'html')
+        msg["Subject"] = "Selenium API Test Fail"
+
+msg["From"] = "<from_email>"
+msg["To"] = "<to_email>"
+p = Popen(["/usr/sbin/sendmail", "-t", "-oi"], stdin=PIPE)
+p.communicate(msg.as_string())
