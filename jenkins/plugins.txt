@@ -1,0 +1,17 @@
+kubernetes:1.24.1
+workflow-job:2.36
+workflow-aggregator:2.6
+credentials-binding:1.21
+git:latest
+job-dsl:latest
+ws-cleanup:latest
+docker:latest
+configuration-as-code:latest
+configuration-as-code-groovy:latest
+workflow-basic-steps:2.18
+workflow-cps:2.76
+workflow-durable-task-step:2.31
+workflow-step-api:2.22
+cloudbees-folder:6.9
+docker-commons:1.14
+pipeline-model-extensions:1.5.1
